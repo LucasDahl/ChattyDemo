@@ -31,6 +31,7 @@ extension UIColor {
     
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
     
+        // Set all colors to be out of 255.
         self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
     
     }
