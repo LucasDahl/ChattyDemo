@@ -23,7 +23,7 @@ class LoginController: UIViewController {
         // Set the background color
         view.backgroundColor = UIColor.white
         
-        // Allow
+        // Allow for the button to be translated into auto-layout
         view.translatesAutoresizingMaskIntoConstraints = false
         
         // Round the corners
@@ -51,6 +51,9 @@ class LoginController: UIViewController {
         // Set the title color to white
         button.setTitleColor(UIColor.white, for: .normal)
         
+        // Set the title font
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
         // Round the buttons
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
@@ -60,6 +63,23 @@ class LoginController: UIViewController {
         
         // Return the button
         return button
+        
+    }()
+    
+    // Name text field
+    let nameTextField: UITextField = {
+        
+        // Make the textfield
+        let tf = UITextField()
+        
+        // Make the place holder text.
+        tf.placeholder = "Name"
+        
+        // Allows for the button to be translated into auto-layout
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Return the nameField
+        return tf
         
     }()
 
@@ -92,6 +112,16 @@ class LoginController: UIViewController {
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
         inputsContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
+        // Add the nameTextField and set the constraints
+        inputsContainerView.addSubview(nameTextField)
+        
+        // x, y, width, height constraints - these are set using the inputsContainerView, as it will go inside it
+        nameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
+        nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
+        nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        
+        
     }
     
     func setupLoginRegisterButton() {
@@ -101,7 +131,7 @@ class LoginController: UIViewController {
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        loginRegisterButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
     
