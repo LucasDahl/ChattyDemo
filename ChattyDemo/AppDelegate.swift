@@ -15,7 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Make the screen appear
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // Make the screen visable
+        window?.makeKeyAndVisible()
+        
+        // Make the Viewcontroller a navigationcontroller
+        window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        
+        
         return true
     }
 
