@@ -14,7 +14,6 @@ class LoginController: UIViewController {
     //MARK: Properties for UI elements
     //================================
     
-    
     // Input container
     var inputsContainerView: UIView = {
         
@@ -37,8 +36,32 @@ class LoginController: UIViewController {
         
     }()
     
-    // button
-    
+    // Login and Register button
+    let loginRegisterButton: UIButton = {
+        
+        // Make the button
+        let button = UIButton(type: .system)
+        
+        // Set the button color
+        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        
+        // Allows for the button to be translated into auto-layout
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set the title color to white
+        button.setTitleColor(UIColor.white, for: .normal)
+        
+        // Round the buttons
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
+        
+        // Set the normal state of the button and title
+        button.setTitle("Register", for: .normal)
+        
+        // Return the button
+        return button
+        
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,22 +69,39 @@ class LoginController: UIViewController {
         // Change the background color
         view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
         
-        // Add the container to the subView
+        // Add UI elements to the subView
         view.addSubview(inputsContainerView)
+        view.addSubview(loginRegisterButton)
         
-        // Call the container setup function
-        setupInputContainerView()
+        // Call the UI setup functions
+        setupInputsContainerView()
+        setupLoginRegisterButton()
         
     }
     
+    //=========================
+    //MARK: - UI Elements setup
+    //=========================
     
-    func setupInputContainerView() {
+    func setupInputsContainerView() {
         
-        // Add the constraints
+        // Add the constraints for the container
+        // x, y, width, height constraints
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
         inputsContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        
+    }
+    
+    func setupLoginRegisterButton() {
+    
+        // Add the loginRegisterButton constraints
+        // x, y, width, height constraints
+        loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
+        loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        loginRegisterButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     
