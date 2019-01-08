@@ -22,6 +22,12 @@ class ViewController: UITableViewController {
     // Logout function
     @objc func handleLogout() {
         
+        // Create the LoginViewController
+        let loginController = LoginController()
+        
+        // Present the login viewController
+        present(loginController, animated: true, completion: nil)
+        
     }
     
 }
