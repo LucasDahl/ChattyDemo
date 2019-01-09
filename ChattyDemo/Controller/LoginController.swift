@@ -154,7 +154,21 @@ class LoginController: UIViewController {
         
     }()
     
-    // ====== End UI setup
+    // Setup the imageView
+    let profileImageView: UIImageView = {
+       
+        // Make the imageView
+        let imageView = UIImageView()
+        
+        // Set the image
+        imageView.image = UIImage(named: "??")
+        
+        // Return the imageView
+        return imageView
+        
+    }()
+    
+    // ====== End UI properties
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -243,6 +257,8 @@ class LoginController: UIViewController {
         // Returns a light colored status bar
         return .lightContent
     }
+    
+    // ====== End UI setup
 
 
 }// End class
