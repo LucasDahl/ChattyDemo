@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginController: UIViewController {
     
@@ -37,7 +38,7 @@ class LoginController: UIViewController {
     }()
     
     // Login and Register button
-    let loginRegisterButton: UIButton = {
+    lazy var loginRegisterButton: UIButton = {
         
         // Make the button
         let button = UIButton(type: .system)
@@ -61,10 +62,14 @@ class LoginController: UIViewController {
         // Set the normal state of the button and title
         button.setTitle("Register", for: .normal)
         
+        // Call a target
+        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        
         // Return the button
         return button
         
     }()
+    
     
     // Name text field
     let nameTextField: UITextField = {
@@ -196,6 +201,61 @@ class LoginController: UIViewController {
         
     }
     
+    //==============
+    //MARK:- Actions
+    //==============
+    
+    // Function for handling registration
+    @objc func handleRegister() {
+        
+        // Check to make sure that the email and passwod textfiled have a value
+        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else { print("No data given"); return }
+        
+        
+        // Create a user with email
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            
+            if error != nil {
+                
+                // Print out error
+                print(error)
+              
+                return
+                
+            }
+            
+            // Successfully authenticated the user.
+            
+            // Save the user
+            // Get the Firebase reference
+            let dbref = Database.database().reference(fromURL: "https://chattydemo-9e0ce.firebaseio.com/")
+            
+            let usersReference = dbref.child("users")
+            
+            // Get the values
+            let values = ["name": name, "email": email]
+            
+            // Update values
+            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                
+                if err != nil {
+                    
+                    // Print error
+                    print(err)
+                    
+                    return
+                    
+                }
+                
+                print("Saved user successfully into firebasedb")
+                
+            })
+
+            
+        }
+        
+    }
+    
     //=========================
     //MARK: - UI Elements setup
     //=========================
@@ -283,6 +343,7 @@ class LoginController: UIViewController {
 
 }// End class
 
+// This is to make a init for the UIColor to save time
 extension UIColor {
     
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
