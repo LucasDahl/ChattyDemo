@@ -82,6 +82,23 @@ class LoginController: UIViewController {
         return tf
         
     }()
+    
+    // Name separator
+    let nameSeparatorView: UIView = {
+       
+        // Create the view
+        let view = UIView()
+        
+        // Set the color
+        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        
+        // Allows for the button to be translated into auto-layout
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Return the view
+        return view
+        
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,14 +129,22 @@ class LoginController: UIViewController {
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
         inputsContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
-        // Add the nameTextField and set the constraints
+        // Add the elements to the subview and set the constraints
         inputsContainerView.addSubview(nameTextField)
+        inputsContainerView.addSubview(nameSeparatorView)
         
         // x, y, width, height constraints - these are set using the inputsContainerView, as it will go inside it
         nameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
         nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
+        
+        // Add the nameSeparatorView constraints - set constraints based of the inputContainerView
+        // x, y, width, height constraints
+        nameSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
+        nameSeparatorView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
+        nameSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        nameSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         
     }
