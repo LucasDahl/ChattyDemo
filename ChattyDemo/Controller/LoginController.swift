@@ -161,7 +161,13 @@ class LoginController: UIViewController {
         let imageView = UIImageView()
         
         // Set the image
-        imageView.image = UIImage(named: "??")
+        imageView.image = UIImage(named: "gameofthrones_splash")
+        
+        // Allows for the button to be translated into auto-layout
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set the contentMode of the imageView
+        imageView.contentMode = .scaleAspectFill
         
         // Return the imageView
         return imageView
@@ -179,16 +185,30 @@ class LoginController: UIViewController {
         // Add UI elements to the subView
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
+        view.addSubview(profileImageView)
         
         // Call the UI setup functions
         setupInputsContainerView()
         setupLoginRegisterButton()
+        
+        // Call the profileImageView setup functions
+        setupProfileImageView()
         
     }
     
     //=========================
     //MARK: - UI Elements setup
     //=========================
+    
+    func setupProfileImageView() {
+        
+        // x, y, width, height constraints
+        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        
+    }
     
     func setupInputsContainerView() {
         
