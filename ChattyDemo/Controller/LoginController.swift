@@ -180,7 +180,7 @@ class LoginController: UIViewController {
     }()
     
     // This is for the login and register toggle
-    let loginRegisterSegmentedControl: UISegmentedControl = {
+    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
        
         // Make the segmentedControl
         let sc = UISegmentedControl(items: ["Login", "Register"])
@@ -193,6 +193,9 @@ class LoginController: UIViewController {
         
         // Allows for the button to be translated into auto-layout
         sc.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Call a target(action)
+        sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
         
         // Return the segmentedControl
         return sc
@@ -226,6 +229,10 @@ class LoginController: UIViewController {
     //==============
     //MARK:- Actions
     //==============
+    
+    @objc func handleLoginRegisterChange() {
+        
+    }
     
     // Function for handling registration and store the user under the user ID in the database
     @objc func handleRegister() {
