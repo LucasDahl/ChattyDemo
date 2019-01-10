@@ -179,6 +179,21 @@ class LoginController: UIViewController {
         
     }()
     
+    // This is for the login and register toggle
+    let loginRegisterSegmentedControl: UISegmentedControl = {
+       
+        // Make the segmentedControl
+        let sc = UISegmentedControl(items: ["Login", "Register"])
+        
+        
+        // Allows for the button to be translated into auto-layout
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Return the segmentedControl
+        return sc
+        
+    }()
+    
     // ====== End UI properties
 
     override func viewDidLoad() {
@@ -191,10 +206,12 @@ class LoginController: UIViewController {
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
+        view.addSubview(loginRegisterSegmentedControl)
         
         // Call the UI setup functions
         setupInputsContainerView()
         setupLoginRegisterButton()
+        setupLoginRegisterSegmentedControl()
         
         // Call the profileImageView setup functions
         setupProfileImageView()
@@ -264,6 +281,16 @@ class LoginController: UIViewController {
     //=========================
     //MARK: - UI Elements setup
     //=========================
+    
+    func setupLoginRegisterSegmentedControl() {
+        
+        // x, y, width, height constraints
+        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+    }
     
     func setupProfileImageView() {
         
