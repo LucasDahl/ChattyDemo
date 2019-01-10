@@ -185,6 +185,11 @@ class LoginController: UIViewController {
         // Make the segmentedControl
         let sc = UISegmentedControl(items: ["Login", "Register"])
         
+        // Set the tint color
+        sc.tintColor = UIColor.white
+        
+        // Change the selected index
+        sc.selectedSegmentIndex = 1
         
         // Allows for the button to be translated into auto-layout
         sc.translatesAutoresizingMaskIntoConstraints = false
@@ -287,8 +292,8 @@ class LoginController: UIViewController {
         // x, y, width, height constraints
         loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
-        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor, multiplier: 1).isActive = true
+        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
     }
     
@@ -296,7 +301,7 @@ class LoginController: UIViewController {
         
         // x, y, width, height constraints
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
