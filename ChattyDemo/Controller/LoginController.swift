@@ -73,7 +73,7 @@ class LoginController: UIViewController {
         button.setTitle("Register", for: .normal)
         
         // Call a target
-        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
         // Return the button
         return button
@@ -266,6 +266,45 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
         passwordTextFieldHeightAnchor?.isActive = true
         
+    }
+    
+    // Handle weather its a login or register
+    @objc func handleLoginRegister() {
+        
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            
+            // Handle login
+            handleLogin()
+            
+        } else {
+            
+            // Handle register
+            handleRegister()
+            
+        }
+    
+    }
+    
+    @objc func handleLogin() {
+        
+        // Check to make sure that the email and passwod textfiled have a value
+        guard let email = emailTextField.text, let password = passwordTextField.text else { print("No data given"); return }
+        
+        // Log the useer in
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            if error != nil {
+                
+                // Print the error
+                print("Error siging in: \(error)")
+                
+            }
+            
+            // Dissmiss the loginViewController after succcessfully logging in.
+            self.dismiss(animated: true, completion: nil)
+            
+        }
+    
     }
     
     // Function for handling registration and store the user under the user ID in the database
