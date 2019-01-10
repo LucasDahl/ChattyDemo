@@ -232,6 +232,12 @@ class LoginController: UIViewController {
     
     @objc func handleLoginRegisterChange() {
         
+        // Get the title based on what the user has selected in the segmented control
+        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
+        
+        // Set the title of the login in register button
+        loginRegisterButton.setTitle(title, for: .normal)
+        
     }
     
     // Function for handling registration and store the user under the user ID in the database
