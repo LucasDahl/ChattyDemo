@@ -315,7 +315,8 @@ class LoginController: UIViewController {
                     
                 }
                 
-                print("Saved user successfully into firebasedb")
+                // Dismiss the loginViewController
+                self.dismiss(animated: true, completion: nil)
                 
             })
 
