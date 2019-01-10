@@ -205,7 +205,7 @@ class LoginController: UIViewController {
     //MARK:- Actions
     //==============
     
-    // Function for handling registration
+    // Function for handling registration and store the user under the user ID in the database
     @objc func handleRegister() {
         
         // Check to make sure that the email and passwod textfiled have a value
