@@ -213,24 +213,29 @@ class LoginController: UIViewController {
         
         
         // Create a user with email
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+        Auth.auth().createUser(withEmail: email, password: password) { (res, error) in
             
             if error != nil {
                 
                 // Print out error
-                print(error)
+                print("Error creating user: \(error)")
               
                 return
                 
+            }
+            
+            // Get the user ID and check if it's nil
+            guard let uid = res?.user.uid else {
+                return
             }
             
             // Successfully authenticated the user.
             
             // Save the user
             // Get the Firebase reference
-            let dbref = Database.database().reference(fromURL: "https://chattydemo-9e0ce.firebaseio.com/")
+            let dbref = Database.database().reference(fromURL: "")
             
-            let usersReference = dbref.child("users")
+            let usersReference = dbref.child("users").child(uid)
             
             // Get the values
             let values = ["name": name, "email": email]
@@ -241,7 +246,7 @@ class LoginController: UIViewController {
                 if err != nil {
                     
                     // Print error
-                    print(err)
+                    print("Error saving user reference\(err)")
                     
                     return
                     
