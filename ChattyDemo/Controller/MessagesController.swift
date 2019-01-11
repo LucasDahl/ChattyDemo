@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ViewController: UITableViewController {
+class MessagesController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
