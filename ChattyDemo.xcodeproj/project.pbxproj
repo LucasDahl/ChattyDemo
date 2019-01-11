@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3582A6C5EF120BE1B72A5C70 /* Pods_ChattyDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D06EF2F546BBA9CA4492B2 /* Pods_ChattyDemo.framework */; };
 		9596B9B221E68CE30066A2A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9596B9B121E68CE30066A2A3 /* GoogleService-Info.plist */; };
+		95A2EA2721E8E0030022B6E5 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A2EA2621E8E0030022B6E5 /* NewMessageController.swift */; };
 		95E1400021E4EE150007DE7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E13FFF21E4EE150007DE7F /* AppDelegate.swift */; };
 		95E1400221E4EE150007DE7F /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E1400121E4EE150007DE7F /* MessagesController.swift */; };
 		95E1400521E4EE150007DE7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95E1400321E4EE150007DE7F /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		5385261A8AAD3FBCA9B115FD /* Pods-ChattyDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChattyDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChattyDemo/Pods-ChattyDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		9596B9B121E68CE30066A2A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		95A2EA2621E8E0030022B6E5 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		95E13FFC21E4EE150007DE7F /* ChattyDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChattyDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95E13FFF21E4EE150007DE7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		95E1400121E4EE150007DE7F /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				95E1401221E4F0A50007DE7F /* LoginController.swift */,
 				95E1400121E4EE150007DE7F /* MessagesController.swift */,
+				95A2EA2621E8E0030022B6E5 /* NewMessageController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95A2EA2721E8E0030022B6E5 /* NewMessageController.swift in Sources */,
 				95E1400221E4EE150007DE7F /* MessagesController.swift in Sources */,
 				95E1401321E4F0A50007DE7F /* LoginController.swift in Sources */,
 				95E1400021E4EE150007DE7F /* AppDelegate.swift in Sources */,

@@ -18,6 +18,12 @@ class MessagesController: UITableViewController {
         // Make the left bar button item(Logout)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
+        // Create the image for the new message
+        let image = UIImage(named: "new_message_icon")
+        
+        // Create the right bar button item(new message)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
+        
         // Check for user being logged in
         checkIfUserIsLoggedIn()
         
@@ -54,6 +60,23 @@ class MessagesController: UITableViewController {
             
         }
 
+    }
+    
+    //================
+    // MARK: - Actions
+    //================
+    
+    @objc func handleNewMessage() {
+        
+        // Make a property for the newMessageController
+        let newMessageController = NewMessageController()
+        
+         // Make a property for the navigationController
+        let navController = UINavigationController(rootViewController: newMessageController)
+        
+        // Present the newMessageController which is a navigationController
+        present(navController, animated: true, completion: nil)
+        
     }
 
     // Logout function
