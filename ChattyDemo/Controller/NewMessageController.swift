@@ -9,6 +9,9 @@
 import UIKit
 
 class NewMessageController: UITableViewController {
+    
+    // Properties
+    let cellId = "CellId"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,4 +32,35 @@ class NewMessageController: UITableViewController {
         
     }
 
+    //=================================
+    // MARK: - TableView methods
+    //=================================
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Create a cell (will update later on
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
+       
+        // Set teh text of the cell
+        cell.textLabel?.text = "Hi"
+        
+        // Return the cell
+        return cell
+        
+    }
+    
+    //================
+    // MARK: - Methods
+    //================
+    
+    func fetchUser() {
+        
+        
+        
+    }
+    
 }
