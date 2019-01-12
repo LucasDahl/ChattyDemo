@@ -79,17 +79,16 @@ class NewMessageController: UITableViewController {
         
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             
-            print("user")
-            print(snapshot) // Prints all the user
+            //print(snapshot) // Prints all the user
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 
                 // Create the user
                 let user = User(dictionary: dictionary)
                 
-                // set the values for the user will crash if the values are not exactly the same as in Firebase
+                // set the values for the user will crash if the values are not exactly the same as in Firebase - NOT RECOMMENDED
                 //user.setValuesForKeys(dictionary)
                 
-                //Set the values another way, a slightly safer way
+                //Set the values
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
 

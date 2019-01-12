@@ -170,7 +170,7 @@ class LoginController: UIViewController {
     }()
     
     // Setup the imageView
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
        
         // Make the imageView
         let imageView = UIImageView()
@@ -183,6 +183,12 @@ class LoginController: UIViewController {
         
         // Set the contentMode of the imageView
         imageView.contentMode = .scaleAspectFill
+        
+        // Add a gesture to the imagview
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handSelectedProfileImageView)))
+        
+        // Allow user interaction
+        imageView.isUserInteractionEnabled = true
         
         // Return the imageView
         return imageView
@@ -240,6 +246,12 @@ class LoginController: UIViewController {
     //MARK:- Actions
     //==============
     
+    @objc func handSelectedProfileImageView() {
+        
+        print(123)
+        
+    }
+    
     @objc func handleLoginRegisterChange() {
         
         // Get the title based on what the user has selected in the segmented control
@@ -296,7 +308,7 @@ class LoginController: UIViewController {
             if error != nil {
                 
                 // Print the error
-                print("Error siging in: \(error)")
+                print("Error siging in: \(error!)")
                 
             }
             
@@ -320,7 +332,7 @@ class LoginController: UIViewController {
             if error != nil {
                 
                 // Print out error
-                print("Error creating user: \(error)")
+                print("Error creating user: \(error!)")
               
                 return
                 
@@ -348,7 +360,7 @@ class LoginController: UIViewController {
                 if err != nil {
                     
                     // Print error
-                    print("Error saving user reference\(err)")
+                    print("Error saving user reference\(err!)")
                     
                     return
                     
