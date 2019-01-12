@@ -242,16 +242,6 @@ class LoginController: UIViewController {
         
     }
     
-    //==============
-    //MARK:- Actions
-    //==============
-    
-    @objc func handSelectedProfileImageView() {
-        
-        print(123)
-        
-    }
-    
     @objc func handleLoginRegisterChange() {
         
         // Get the title based on what the user has selected in the segmented control
@@ -294,7 +284,7 @@ class LoginController: UIViewController {
             handleRegister()
             
         }
-    
+        
     }
     
     @objc func handleLogin() {
@@ -316,7 +306,7 @@ class LoginController: UIViewController {
             self.dismiss(animated: true, completion: nil)
             
         }
-    
+        
     }
     
     // Function for handling registration and store the user under the user ID in the database
@@ -333,7 +323,7 @@ class LoginController: UIViewController {
                 
                 // Print out error
                 print("Error creating user: \(error!)")
-              
+                
                 return
                 
             }
@@ -370,7 +360,7 @@ class LoginController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
                 
             })
-
+            
             
         }
         
