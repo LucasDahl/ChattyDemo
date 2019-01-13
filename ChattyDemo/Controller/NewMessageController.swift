@@ -11,8 +11,8 @@ import Firebase
 
 class NewMessageController: UITableViewController {
     
+    // Properties
     let cellId = "cellId"
-    
     var users = [User]()
     
     override func viewDidLoad() {
@@ -26,6 +26,7 @@ class NewMessageController: UITableViewController {
     }
     
     func fetchUser() {
+        
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
@@ -39,14 +40,15 @@ class NewMessageController: UITableViewController {
                     self.tableView.reloadData()
                 }
                 
-                //                user.name = dictionary["name"]
             }
             
         }, withCancel: nil)
     }
     
     @objc func handleCancel() {
+        
         dismiss(animated: true, completion: nil)
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,6 +71,7 @@ class NewMessageController: UITableViewController {
     
 }
 
+// Create a custom cell
 class UserCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

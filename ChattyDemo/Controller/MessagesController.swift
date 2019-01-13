@@ -29,9 +29,13 @@ class MessagesController: UITableViewController {
     }
     
     func checkIfUserIsLoggedIn() {
+        
         if Auth.auth().currentUser?.uid == nil {
+            
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
+            
         } else {
+            
             let uid = Auth.auth().currentUser?.uid
             Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -46,13 +50,18 @@ class MessagesController: UITableViewController {
     @objc func handleLogout() {
         
         do {
+            
             try Auth.auth().signOut()
-        } catch let logoutError {
+            
+        } catch let logoutError
+        {
             print(logoutError)
+            
         }
         
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
+        
     }
     
 }
