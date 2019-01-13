@@ -11,478 +11,251 @@ import Firebase
 
 class LoginController: UIViewController {
     
-    //===================
+    //==================
     // MARK: - Properties
     //===================
+    
+    let inputsContainerView: UIView = {
+        
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        view.layer.masksToBounds = true
+        return view
+        
+    }()
+    
+    lazy var loginRegisterButton: UIButton = {
+        
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        button.setTitle("Register", for: UIControl.State())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: UIControl.State())
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
+        
+        return button
+        
+    }()
+    
+    @objc func handleLoginRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
+            
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            //successfully logged in our user
+            self.dismiss(animated: true, completion: nil)
+            
+        })
+        
+    }
+    
+    let nameTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Name"
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
+    }()
+    
+    let nameSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let emailTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Email"
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
+    }()
+    
+    let emailSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let passwordTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Password"
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.isSecureTextEntry = true
+        return tf
+    }()
+    
+    lazy var profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "gameofthrones_splash")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
+        imageView.isUserInteractionEnabled = true
+        
+        return imageView
+    }()
+    
+    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
+        let sc = UISegmentedControl(items: ["Login", "Register"])
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        sc.tintColor = UIColor.white
+        sc.selectedSegmentIndex = 1
+        sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
+        return sc
+    }()
+    
+    @objc func handleLoginRegisterChange() {
+        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
+        loginRegisterButton.setTitle(title, for: UIControl.State())
+        
+        // change height of inputContainerView, but how???
+        inputsContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
+        
+        // change height of nameTextField
+        nameTextFieldHeightAnchor?.isActive = false
+        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
+        nameTextFieldHeightAnchor?.isActive = true
+        nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0
+        
+        emailTextFieldHeightAnchor?.isActive = false
+        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        emailTextFieldHeightAnchor?.isActive = true
+        
+        passwordTextFieldHeightAnchor?.isActive = false
+        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        passwordTextFieldHeightAnchor?.isActive = true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
+        
+        view.addSubview(inputsContainerView)
+        view.addSubview(loginRegisterButton)
+        view.addSubview(profileImageView)
+        view.addSubview(loginRegisterSegmentedControl)
+        
+        setupInputsContainerView()
+        setupLoginRegisterButton()
+        setupProfileImageView()
+        setupLoginRegisterSegmentedControl()
+    }
+    
+    func setupLoginRegisterSegmentedControl() {
+        //need x, y, width, height constraints
+        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor, multiplier: 1).isActive = true
+        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
+    }
+    
+    func setupProfileImageView() {
+        //need x, y, width, height constraints
+        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    }
     
     var inputsContainerViewHeightAnchor: NSLayoutConstraint?
     var nameTextFieldHeightAnchor: NSLayoutConstraint?
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
-    
-    //================================
-    //MARK: Properties for UI elements
-    //================================
-    
-    // Input container
-    var inputsContainerView: UIView = {
-        
-        // Setup the UI elements
-        let view = UIView()
-        
-        // Set the background color
-        view.backgroundColor = UIColor.white
-        
-        // Allow for the button to be translated into auto-layout
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Round the corners
-        view.layer.cornerRadius = 5
-        // This is needed or the corners won't be rounded.
-        view.layer.masksToBounds = true
-        
-        // Return the view
-        return view
-        
-    }()
-    
-    // Login and Register button
-    lazy var loginRegisterButton: UIButton = {
-        
-        // Make the button
-        let button = UIButton(type: .system)
-        
-        // Set the button color
-        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
-        
-        // Allows for the button to be translated into auto-layout
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Set the title color to white
-        button.setTitleColor(UIColor.white, for: .normal)
-        
-        // Set the title font
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        
-        // Round the buttons
-        button.layer.cornerRadius = 5
-        button.layer.masksToBounds = true
-        
-        // Set the normal state of the button and title
-        button.setTitle("Register", for: .normal)
-        
-        // Call a target
-        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
-        
-        // Return the button
-        return button
-        
-    }()
-    
-    
-    // Name text field
-    let nameTextField: UITextField = {
-        
-        // Make the textfield
-        let tf = UITextField()
-        
-        // Make the place holder text.
-        tf.placeholder = "Name"
-        
-        // Allows for the button to be translated into auto-layout
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Return the nameField
-        return tf
-        
-    }()
-    
-    // Name separator
-    let nameSeparatorView: UIView = {
-       
-        // Create the view
-        let view = UIView()
-        
-        // Set the color
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
-        
-        // Allows for the button to be translated into auto-layout
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Return the view
-        return view
-        
-    }()
-    
-    // Name text field
-    let emailTextField: UITextField = {
-        
-        // Make the textfield
-        let tf = UITextField()
-        
-        // Make the place holder text.
-        tf.placeholder = "Email"
-        
-        // Allows for the button to be translated into auto-layout
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Return the nameField
-        return tf
-        
-    }()
-    
-    // Name separator
-    let emailSeparatorView: UIView = {
-        
-        // Create the view
-        let view = UIView()
-        
-        // Set the color
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
-        
-        // Allows for the button to be translated into auto-layout
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Return the view
-        return view
-        
-    }()
-    
-    // Name text field
-    let passwordTextField: UITextField = {
-        
-        // Make the textfield
-        let tf = UITextField()
-        
-        // Make the place holder text.
-        tf.placeholder = "Password"
-        
-        // Allows for the button to be translated into auto-layout
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Make the typed characters hidden
-        tf.isSecureTextEntry = true
-        
-        // Return the nameField
-        return tf
-        
-    }()
-    
-    // Setup the imageView
-    lazy var profileImageView: UIImageView = {
-       
-        // Make the imageView
-        let imageView = UIImageView()
-        
-        // Set the image
-        imageView.image = UIImage(named: "gameofthrones_splash")
-        
-        // Allows for the button to be translated into auto-layout
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Set the contentMode of the imageView
-        imageView.contentMode = .scaleAspectFill
-        
-        // Add a gesture to the imagview
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handSelectedProfileImageView)))
-        
-        // Allow user interaction
-        imageView.isUserInteractionEnabled = true
-        
-        // Return the imageView
-        return imageView
-        
-    }()
-    
-    // This is for the login and register toggle
-    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
-       
-        // Make the segmentedControl
-        let sc = UISegmentedControl(items: ["Login", "Register"])
-        
-        // Set the tint color
-        sc.tintColor = UIColor.white
-        
-        // Change the selected index
-        sc.selectedSegmentIndex = 1
-        
-        // Allows for the button to be translated into auto-layout
-        sc.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Call a target(action)
-        sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
-        
-        // Return the segmentedControl
-        return sc
-        
-    }()
-    
-    // ====== End UI properties
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Change the background color
-        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
-        
-        // Add UI elements to the subView
-        view.addSubview(inputsContainerView)
-        view.addSubview(loginRegisterButton)
-        view.addSubview(profileImageView)
-        view.addSubview(loginRegisterSegmentedControl)
-        
-        // Call the UI setup functions
-        setupInputsContainerView()
-        setupLoginRegisterButton()
-        setupLoginRegisterSegmentedControl()
-        
-        // Call the profileImageView setup functions
-        setupProfileImageView()
-        
-    }
-    
-    @objc func handleLoginRegisterChange() {
-        
-        // Get the title based on what the user has selected in the segmented control
-        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
-        
-        // Set the title of the login in register button
-        loginRegisterButton.setTitle(title, for: .normal)
-        
-        // Change height of inputContainerView
-        inputsContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
-        
-        // Chnage height of nameTextFiled
-        nameTextFieldHeightAnchor?.isActive = false
-        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
-        nameTextFieldHeightAnchor?.isActive = true
-        
-        // Chnage height of emailTextFiled
-        emailTextFieldHeightAnchor?.isActive = false
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        emailTextFieldHeightAnchor?.isActive = true
-        
-        // Chnage height of passwordTextFiled
-        passwordTextFieldHeightAnchor?.isActive = false
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        passwordTextFieldHeightAnchor?.isActive = true
-        
-    }
-    
-    // Handle weather its a login or register
-    @objc func handleLoginRegister() {
-        
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            
-            // Handle login
-            handleLogin()
-            
-        } else {
-            
-            // Handle register
-            handleRegister()
-            
-        }
-        
-    }
-    
-    @objc func handleLogin() {
-        
-        // Check to make sure that the email and passwod textfiled have a value
-        guard let email = emailTextField.text, let password = passwordTextField.text else { print("No data given"); return }
-        
-        // Log the useer in
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            
-            if error != nil {
-                
-                // Print the error
-                print("Error siging in: \(error!)")
-                
-            }
-            
-            // Dissmiss the loginViewController after succcessfully logging in.
-            self.dismiss(animated: true, completion: nil)
-            
-        }
-        
-    }
-    
-    // Function for handling registration and store the user under the user ID in the database
-    @objc func handleRegister() {
-        
-        // Check to make sure that the email and passwod textfiled have a value
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else { print("No data given"); return }
-        
-        
-        // Create a user with email
-        Auth.auth().createUser(withEmail: email, password: password) { (res, error) in
-            
-            if error != nil {
-                
-                // Print out error
-                print("Error creating user: \(error!)")
-                
-                return
-                
-            }
-            
-            // Get the user ID and check if it's nil
-            guard let uid = res?.user.uid else {
-                return
-            }
-            
-            // Successfully authenticated the user.
-            
-            // Save the user
-            // Get the Firebase reference
-            let dbref = Database.database().reference(fromURL: "")
-            
-            let usersReference = dbref.child("users").child(uid)
-            
-            // Get the values
-            let values = ["name": name, "email": email]
-            
-            // Update values
-            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                
-                if err != nil {
-                    
-                    // Print error
-                    print("Error saving user reference\(err!)")
-                    
-                    return
-                    
-                }
-                
-                // Dismiss the loginViewController
-                self.dismiss(animated: true, completion: nil)
-                
-            })
-            
-            
-        }
-        
-    }
-    
-    //=========================
-    //MARK: - UI Elements setup
-    //=========================
-    
-    func setupLoginRegisterSegmentedControl() {
-        
-        // x, y, width, height constraints
-        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
-        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor, multiplier: 1).isActive = true
-        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        
-    }
-    
-    func setupProfileImageView() {
-        
-        // x, y, width, height constraints
-        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
-    }
-    
     func setupInputsContainerView() {
-        
-        // Add the constraints for the container
-        // x, y, width, height constraints
+        //need x, y, width, height constraints
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        
-        // This constraint will chnaged based on if the user is a new user, or a returning user
         inputsContainerViewHeightAnchor = inputsContainerView.heightAnchor.constraint(equalToConstant: 150)
         inputsContainerViewHeightAnchor?.isActive = true
         
-        // Add the elements to the subview and set the constraints
         inputsContainerView.addSubview(nameTextField)
         inputsContainerView.addSubview(nameSeparatorView)
         inputsContainerView.addSubview(emailTextField)
         inputsContainerView.addSubview(emailSeparatorView)
         inputsContainerView.addSubview(passwordTextField)
         
-        // x, y, width, height constraints - these are set using the inputsContainerView, as it will go inside it
+        //need x, y, width, height constraints
         nameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
-        nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         
-        // This constraint will chnaged based on if the user is a new user, or a returning user
+        nameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
         nameTextFieldHeightAnchor?.isActive = true
         
-        // Add the nameSeparatorView constraints - set constraints based of the inputContainerView
-        // x, y, width, height constraints
+        //need x, y, width, height constraints
         nameSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         nameSeparatorView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
         nameSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         nameSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        // x, y, width, height constraints - these are set using the inputsContainerView, as it will go inside it
+        //need x, y, width, height constraints
         emailTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
+        
         emailTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         
-        // This constraint will chnaged based on if the user is a new user, or a returning user
         emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
+        
         emailTextFieldHeightAnchor?.isActive = true
         
-        // Add the nemailSeparatorView constraints - set constraints based of the inputContainerView
-        // x, y, width, height constraints
+        //need x, y, width, height constraints
         emailSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         emailSeparatorView.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         emailSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        // x, y, width, height constraints - these are set using the inputsContainerView, as it will go inside it
+        //need x, y, width, height constraints
         passwordTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
-        passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         
-        // This constraint will chnaged based on if the user is a new user, or a returning user
+        passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
         passwordTextFieldHeightAnchor?.isActive = true
-        
-        
     }
     
     func setupLoginRegisterButton() {
-    
-        // Add the loginRegisterButton constraints
-        // x, y, width, height constraints
+        //need x, y, width, height constraints
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
     }
     
-    // Set the bar style
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        // Returns a light colored status bar
+    override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
     }
-    
-    // ====== End UI setup
+}
 
-
-}// End class
-
-// This is to make a init for the UIColor to save time
 extension UIColor {
     
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
-    
-        // Set all colors to be out of 255.
         self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
-    
     }
     
 }
+

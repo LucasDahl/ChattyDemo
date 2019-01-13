@@ -11,109 +11,63 @@ import Firebase
 
 class NewMessageController: UITableViewController {
     
-    // Properties
-    let cellId = "CellId"
+    let cellId = "cellId"
+    
     var users = [User]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Make a cancel button for the tabbar
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
-        // Register the Usercell
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-        // Fetch the users
         fetchUser()
-        
     }
     
-    
-    //================
-    // MARK: - Actions
-    //================
+    func fetchUser() {
+        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let user = User(dictionary: dictionary)
+                
+                //if you use this setter, your app will crash if your class properties don't exactly match up with the firebase dictionary keys
+                self.users.append(user)
+                
+                //this will crash because of background thread, so lets use dispatch_async to fix
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+                //                user.name = dictionary["name"]
+            }
+            
+        }, withCancel: nil)
+    }
     
     @objc func handleCancel() {
-        
-        // Dismiss the newMessageViewController
         dismiss(animated: true, completion: nil)
-        
     }
-
-    //=================================
-    // MARK: - TableView methods
-    //=================================
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        // Return the total number of users from the array
         return users.count
-        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // Create a cell
+        // let use a hack for now, we actually need to dequeue our cells for memory efficiency
+        //        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-       
-        // Get a reference to the user
+        
         let user = users[indexPath.row]
-        
-        // Set the text of the cell to the users name
         cell.textLabel?.text = user.name
-        
-        // Seth the user email
         cell.detailTextLabel?.text = user.email
         
-        // Return the cell
         return cell
-        
     }
     
-    //================
-    // MARK: - Methods
-    //================
-    
-    func fetchUser() {
-        
-        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
-            
-            //print(snapshot) // Prints all the user
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                
-                // Create the user
-                let user = User(dictionary: dictionary)
-                
-                // set the values for the user will crash if the values are not exactly the same as in Firebase - NOT RECOMMENDED
-                //user.setValuesForKeys(dictionary)
-                
-                //Set the values
-                user.name = dictionary["name"] as? String
-                user.email = dictionary["email"] as? String
-
-                
-                // Append the the user to the users array
-                self.users.append(user)
-                
-                // Reload the data for the tableview
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                })
-                
-            }
-            
-        }, withCancel: nil)
-        
-    }
-    
-    
-    
-} // End class
-
-//====================
-// MARK: - Custom cell
-//====================
+}
 
 class UserCell: UITableViewCell {
     
@@ -126,4 +80,5 @@ class UserCell: UITableViewCell {
     }
     
 }
+
 
