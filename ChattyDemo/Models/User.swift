@@ -20,4 +20,6 @@ class User: NSObject {
         self.email = dictionary["email"] as? String
         self.profileImageUrl = dictionary["profileImageUrl"] as? String
     }
+    
+    
 }
