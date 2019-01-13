@@ -37,13 +37,25 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterButton: UIButton = {
         
+        // Create the button
         let button = UIButton(type: .system)
+        
+        // Set the button colors
         button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        
+        // Set teh title of the button
         button.setTitle("Register", for: UIControl.State())
+        
+        //
         button.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set the title color
         button.setTitleColor(UIColor.white, for: UIControl.State())
+        
+        // Set the font for the button
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
+        // Add the target
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
         return button
