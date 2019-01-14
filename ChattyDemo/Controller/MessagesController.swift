@@ -27,6 +27,32 @@ class MessagesController: UITableViewController {
         
     }
     
+    //================
+    // MARK: - Actions
+    //================
+    
+    @objc func handleLogout() {
+        
+        do {
+            
+            // Signout the user
+            try Auth.auth().signOut()
+            
+        } catch let logoutError {
+            
+            // Print the error
+            print(logoutError)
+            
+        }
+        
+        let loginController = LoginController()
+        
+        // Present the vc
+        present(loginController, animated: true, completion: nil)
+        
+    }
+
+    
     @objc func handleNewMessage() {
         
         // Set the newMessage controller
@@ -39,6 +65,10 @@ class MessagesController: UITableViewController {
         present(navController, animated: true, completion: nil)
         
     }
+    
+    //==================
+    // MARK: User status
+    //==================
     
     func checkIfUserIsLoggedIn() {
         
@@ -67,28 +97,5 @@ class MessagesController: UITableViewController {
             }, withCancel: nil)
         }
     }
-    
-    
-    @objc func handleLogout() {
-        
-        do {
-            
-            // Signout the user
-            try Auth.auth().signOut()
-            
-        } catch let logoutError {
-            
-            // Print the error
-            print(logoutError)
-            
-        }
-        
-        let loginController = LoginController()
-        
-        // Present the vc
-        present(loginController, animated: true, completion: nil)
-        
-    }
-    
-}
+}// End class
 

@@ -28,6 +28,20 @@ class NewMessageController: UITableViewController {
         
     }
     
+    //================
+    // MARK: - Actions
+    //================
+    
+    @objc func handleCancel() {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    //===========================
+    // MARK: - Data for tableview
+    //===========================
+    
     func fetchUser() {
         
         // Get the location where the user is stored
@@ -54,16 +68,15 @@ class NewMessageController: UITableViewController {
         }, withCancel: nil)
     }
     
+    //==================
+    // MARK: - TableView
+    //==================
+    
     // Sets the row height for the tableview
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
     
-    @objc func handleCancel() {
-        
-        dismiss(animated: true, completion: nil)
-        
-    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -97,10 +110,15 @@ class NewMessageController: UITableViewController {
     
 }
 
+//====================
+// MARK: - Custom Cell
+//====================
+
 // Create a custom cell
 class UserCell: UITableViewCell {
     
     override func layoutSubviews() {
+        
         super.layoutSubviews()
         
         textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)

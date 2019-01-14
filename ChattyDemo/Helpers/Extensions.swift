@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// Image cache property
 let imageCache = NSCache<NSString, AnyObject>()
 
 extension UIImageView {
@@ -17,28 +18,38 @@ extension UIImageView {
         
         self.image = nil
         
-        //check cache for image first
+        // Check cache for image first
         if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
+            
             self.image = cachedImage
+            
             return
+            
         }
         
-        //otherwise fire off a new download
+        // Otherwise fire off a new download
         let url = URL(string: urlString)
+        
         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
             
-            //download hit an error so lets return out
+            // Download hit an error
             if let error = error {
-                print(error)
+                
+                print("Error getting profile Image \(error)")
+                
                 return
+                
             }
             
             DispatchQueue.main.async(execute: {
                 
                 if let downloadedImage = UIImage(data: data!) {
+                    
                     imageCache.setObject(downloadedImage, forKey: urlString as NSString)
                     
+                    // Set the image to the downloaded image for the user profile image
                     self.image = downloadedImage
+                    
                 }
             })
             
