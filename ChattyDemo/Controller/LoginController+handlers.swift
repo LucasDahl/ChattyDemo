@@ -69,7 +69,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                             
                         }
                         
-                        // Check if the URL is nl
+                        // Check if the URL is nil
                         guard let url = url else { return }
                         
                         // Set the values to be used
@@ -88,7 +88,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
         
         // Get a ref to the Database
-        let ref = Database.database().reference(fromURL: "")
+        let ref = Database.database().reference(fromURL: "https://chattydemo-9e0ce.firebaseio.com/")
         
         // Get a ref to the users ref
         let usersReference = ref.child("users").child(uid)
@@ -105,7 +105,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             }
             
             // Call the messagecontroller method of setting th titlebar
-            self.messagesController?.navigationItem.title = values["names"] as? String
+            //self.messagesController?.navigationItem.title = values["names"] as? String
             //     let user = User(dictionary: values)
             self.messagesController?.fetchUserAndSetupNavBarTitle()
             

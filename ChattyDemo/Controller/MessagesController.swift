@@ -97,14 +97,27 @@ class MessagesController: UITableViewController {
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                
+               
                 // Set the title of navigation item
-                self.navigationItem.title = dictionary["name"] as? String
+                let user = User(dictionary: dictionary)
+                self.setupNavBarWithUser(user)
                 
             }
             
         }, withCancel: nil)
         
+    }
+    
+    func setupNavBarWithUser(_ user: User) {
+        
+        // Setup the title view
+        let titleView = UIView()
+        
+        // Setup the frame
+        titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        
+        // Set the title of the navBar
+        self.navigationItem.titleView = titleView
         
     }
     
