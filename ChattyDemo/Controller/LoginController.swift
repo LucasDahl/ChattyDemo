@@ -28,6 +28,8 @@ class LoginController: UIViewController {
         
         let view = UIView()
         view.backgroundColor = UIColor.white
+        
+        // this is needed to allow auto-layout
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.masksToBounds = true
@@ -46,7 +48,7 @@ class LoginController: UIViewController {
         // Set teh title of the button
         button.setTitle("Register", for: UIControl.State())
         
-        //
+        // this is needed to allow auto-layout
         button.translatesAutoresizingMaskIntoConstraints = false
         
         // Set the title color
@@ -66,6 +68,8 @@ class LoginController: UIViewController {
         
         let tf = UITextField()
         tf.placeholder = "Name"
+        
+        // this is needed to allow auto-layout
         tf.translatesAutoresizingMaskIntoConstraints = false
         
         return tf
@@ -76,6 +80,8 @@ class LoginController: UIViewController {
         
         let view = UIView()
         view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        
+        // this is needed to allow auto-layout
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -86,6 +92,8 @@ class LoginController: UIViewController {
         
         let tf = UITextField()
         tf.placeholder = "Email"
+        
+        // this is needed to allow auto-layout
         tf.translatesAutoresizingMaskIntoConstraints = false
         
         return tf
@@ -96,6 +104,8 @@ class LoginController: UIViewController {
         
         let view = UIView()
         view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        
+        // this is needed to allow auto-layout
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -106,6 +116,8 @@ class LoginController: UIViewController {
         
         let tf = UITextField()
         tf.placeholder = "Password"
+        
+        // this is needed to allow auto-layout
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.isSecureTextEntry = true
         
@@ -117,6 +129,8 @@ class LoginController: UIViewController {
         
         let imageView = UIImageView()
         imageView.image = UIImage(named: "gameofthrones_splash")
+        
+        // this is needed to allow auto-layout
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         
@@ -130,6 +144,8 @@ class LoginController: UIViewController {
     lazy var loginRegisterSegmentedControl: UISegmentedControl = {
         
         let sc = UISegmentedControl(items: ["Login", "Register"])
+        
+        // this is needed to allow auto-layout
         sc.translatesAutoresizingMaskIntoConstraints = false
         sc.tintColor = UIColor.white
         sc.selectedSegmentIndex = 1
