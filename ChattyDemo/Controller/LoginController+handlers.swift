@@ -87,7 +87,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
         
         // Get a ref to the Database
-        let ref = Database.database().reference(fromURL: "https://chattydemo-9e0ce.firebaseio.com/")
+        let ref = Database.database().reference(fromURL: ")
         
         // Get a ref to the users ref
         let usersReference = ref.child("users").child(uid)
@@ -104,7 +104,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             }
             
             // Call the messagecontroller method of setting th titlebar
-            self.messagesController?.fetchUserAndSetupNavBarTitle()
+            self.messagesController?.navigationItem.title = values["names"] as? String
             
             // Dismiss the viewController
             self.dismiss(animated: true, completion: nil)
