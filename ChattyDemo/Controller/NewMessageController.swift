@@ -18,18 +18,25 @@ class NewMessageController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the leftBarButtonITem
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
+        // Register the cell
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         fetchUser()
+        
     }
     
     func fetchUser() {
         
+        // Get the location where the user is stored
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             
+            // Check for the user
             if let dictionary = snapshot.value as? [String: AnyObject] {
+                
+                // Make the user
                 let user = User(dictionary: dictionary)
                 
                 //if you use this setter, your app will crash if your class properties don't exactly match up with the firebase dictionary keys
@@ -37,7 +44,9 @@ class NewMessageController: UITableViewController {
                 
                 //this will crash because of background thread, so lets use dispatch_async to fix
                 DispatchQueue.main.async {
+                    
                     self.tableView.reloadData()
+                    
                 }
                 
             }
@@ -52,21 +61,28 @@ class NewMessageController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        // Return the total number of users
         return users.count
+        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // let use a hack for now, we actually need to dequeue our cells for memory efficiency
-        //        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
-        
+        // Make the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         
+        // Get the user
         let user = users[indexPath.row]
+        
+        // Set the users name
         cell.textLabel?.text = user.name
+        
+        // Set the users email to the dertail label
         cell.detailTextLabel?.text = user.email
         
         return cell
+        
     }
     
 }

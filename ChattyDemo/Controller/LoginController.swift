@@ -26,13 +26,21 @@ class LoginController: UIViewController {
     
     let inputsContainerView: UIView = {
         
+        // Setup the view
         let view = UIView()
+        
+        // Setup the view volor
         view.backgroundColor = UIColor.white
         
         // this is needed to allow auto-layout
         view.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set the corner radius
         view.layer.cornerRadius = 5
+        
+        // Mask the view to bounds
         view.layer.masksToBounds = true
+        
         return view
         
     }()
@@ -66,7 +74,10 @@ class LoginController: UIViewController {
     
     let nameTextField: UITextField = {
         
+        // Setup the tefield
         let tf = UITextField()
+        
+        // Set the place holder text
         tf.placeholder = "Name"
         
         // this is needed to allow auto-layout
@@ -78,7 +89,10 @@ class LoginController: UIViewController {
     
     let nameSeparatorView: UIView = {
         
+        // Setup the view
         let view = UIView()
+        
+        // Set the color of the view
         view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         
         // this is needed to allow auto-layout
