@@ -42,10 +42,11 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             let imageName = NSUUID().uuidString
             
             // Get a ref to save the image in the storage
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
             // Check if the data is nil
-            if let uploadData = self.profileImageView.image!.pngData() {
+            // Add compression to the images to avoid wasting time/data
+            if let profileImage = self.profileImageView.image, let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
                 
                 storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
                     
@@ -87,7 +88,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
         
         // Get a ref to the Database
-        let ref = Database.database().reference(fromURL: ")
+        let ref = Database.database().reference(fromURL: "")
         
         // Get a ref to the users ref
         let usersReference = ref.child("users").child(uid)
@@ -105,6 +106,8 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             // Call the messagecontroller method of setting th titlebar
             self.messagesController?.navigationItem.title = values["names"] as? String
+            //     let user = User(dictionary: values)
+            self.messagesController?.fetchUserAndSetupNavBarTitle()
             
             // Dismiss the viewController
             self.dismiss(animated: true, completion: nil)
