@@ -143,12 +143,19 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterSegmentedControl: UISegmentedControl = {
         
+        // Set up the segmented control
         let sc = UISegmentedControl(items: ["Login", "Register"])
         
         // this is needed to allow auto-layout
         sc.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set the color of the sc
         sc.tintColor = UIColor.white
+        
+        // Set its index
         sc.selectedSegmentIndex = 1
+        
+        // Action
         sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
         
         return sc
@@ -158,18 +165,28 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the background color
         view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
         
+        // Add the subviews
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
         
+        // Call the setup functions
         setupInputsContainerView()
         setupLoginRegisterButton()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
+        
     }
+    
+    
+    
+    //================
+    // MARK: - Actions
+    //================
     
     @objc func handleLoginRegister() {
         if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
@@ -178,10 +195,6 @@ class LoginController: UIViewController {
             handleRegister()
         }
     }
-    
-    //================
-    // MARK: - Actions
-    //================
     
     func handleLogin() {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
