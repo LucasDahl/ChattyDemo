@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3582A6C5EF120BE1B72A5C70 /* Pods_ChattyDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D06EF2F546BBA9CA4492B2 /* Pods_ChattyDemo.framework */; };
+		950CBC3F21ECDA9300F30FA1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950CBC3E21ECDA9300F30FA1 /* Extensions.swift */; };
 		9527530121EA8B2500145804 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527530021EA8B2500145804 /* LoginController+handlers.swift */; };
 		9596B9B221E68CE30066A2A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9596B9B121E68CE30066A2A3 /* GoogleService-Info.plist */; };
 		95A2EA2721E8E0030022B6E5 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A2EA2621E8E0030022B6E5 /* NewMessageController.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		5385261A8AAD3FBCA9B115FD /* Pods-ChattyDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChattyDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChattyDemo/Pods-ChattyDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		950CBC3E21ECDA9300F30FA1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9527530021EA8B2500145804 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		9596B9B121E68CE30066A2A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		95A2EA2621E8E0030022B6E5 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
@@ -67,6 +69,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		950CBC3D21ECDA6100F30FA1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				950CBC3E21ECDA9300F30FA1 /* Extensions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		95A2EA2821E8E5730022B6E5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +106,7 @@
 		95E13FFE21E4EE150007DE7F /* ChattyDemo */ = {
 			isa = PBXGroup;
 			children = (
+				950CBC3D21ECDA6100F30FA1 /* Helpers */,
 				95A2EA2821E8E5730022B6E5 /* Models */,
 				95E1401121E4F07E0007DE7F /* Controller */,
 				95E13FFF21E4EE150007DE7F /* AppDelegate.swift */,
@@ -244,6 +255,7 @@
 				95E1401321E4F0A50007DE7F /* LoginController.swift in Sources */,
 				95A2EA2A21E8E5910022B6E5 /* User.swift in Sources */,
 				95E1400021E4EE150007DE7F /* AppDelegate.swift in Sources */,
+				950CBC3F21ECDA9300F30FA1 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
