@@ -11,7 +11,7 @@ import Firebase
 
 class LoginController: UIViewController {
     
-    //==================
+    //===================
     // MARK: - Properties
     //===================
     
@@ -19,6 +19,7 @@ class LoginController: UIViewController {
     var nameTextFieldHeightAnchor: NSLayoutConstraint?
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
+    var messagesController: MessagesController?
     
     //======================
     // MARK: - UI properties

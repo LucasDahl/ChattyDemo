@@ -45,7 +45,11 @@ class MessagesController: UITableViewController {
             
         }
         
+        // Get th loginController
         let loginController = LoginController()
+        
+        // Set the loginController to the messageController
+        loginController.messagesController = self
         
         // Present the vc
         present(loginController, animated: true, completion: nil)
@@ -80,22 +84,29 @@ class MessagesController: UITableViewController {
             
         } else {
             
-            // USer is not logged in
+          fetchUserAndSetupNavBarTitle()
             
-            // Create the user ID
-            let uid = Auth.auth().currentUser?.uid
-            
-            Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    
-                    // Set the title of navigation item
-                    self.navigationItem.title = dictionary["name"] as? String
-                    
-                }
-                
-            }, withCancel: nil)
         }
     }
+    
+    func fetchUserAndSetupNavBarTitle() {
+        
+        // Create the user ID
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                
+                // Set the title of navigation item
+                self.navigationItem.title = dictionary["name"] as? String
+                
+            }
+            
+        }, withCancel: nil)
+        
+        
+    }
+    
 }// End class
 

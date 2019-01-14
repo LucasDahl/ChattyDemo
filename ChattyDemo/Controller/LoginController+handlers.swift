@@ -103,6 +103,9 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 
             }
             
+            // Call the messagecontroller method of setting th titlebar
+            self.messagesController?.fetchUserAndSetupNavBarTitle()
+            
             // Dismiss the viewController
             self.dismiss(animated: true, completion: nil)
             
