@@ -90,7 +90,10 @@ class LoginController: UIViewController {
     
     let emailTextField: UITextField = {
         
+        // Setup the textfield
         let tf = UITextField()
+        
+        // Set the default text
         tf.placeholder = "Email"
         
         // this is needed to allow auto-layout
@@ -102,7 +105,10 @@ class LoginController: UIViewController {
     
     let emailSeparatorView: UIView = {
         
+        // Setup the view
         let view = UIView()
+        
+        // Set the view color
         view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         
         // this is needed to allow auto-layout
@@ -114,11 +120,16 @@ class LoginController: UIViewController {
     
     let passwordTextField: UITextField = {
         
+        // Setup the textfield
         let tf = UITextField()
+        
+        // Set the place holder text
         tf.placeholder = "Password"
         
         // this is needed to allow auto-layout
         tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Allow text entry
         tf.isSecureTextEntry = true
         
         return tf
@@ -127,14 +138,22 @@ class LoginController: UIViewController {
     
     lazy var profileImageView: UIImageView = {
         
+        // Setup the image
         let imageView = UIImageView()
+        
+        // Set the default image
         imageView.image = UIImage(named: "gameofthrones_splash")
         
         // this is needed to allow auto-layout
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set the aspect
         imageView.contentMode = .scaleAspectFill
         
+        // Add the gestures
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
+        
+        // Allow the user to interacte with the image
         imageView.isUserInteractionEnabled = true
         
         return imageView
@@ -330,6 +349,8 @@ class LoginController: UIViewController {
         
     }
     
+    
+    // Set the color of the status bar
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
     }
