@@ -143,7 +143,7 @@ class LoginController: UIViewController {
         // this is needed to allow auto-layout
         tf.translatesAutoresizingMaskIntoConstraints = false
         
-        // Allow text entry
+        // Hides the typed text
         tf.isSecureTextEntry = true
         
         return tf
