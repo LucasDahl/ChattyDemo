@@ -244,6 +244,10 @@ class LoginController: UIViewController {
             }
             
             //successfully logged in our user
+            
+            // Update the navbar for the user logging in
+            self.messagesController?.fetchUserAndSetupNavBarTitle()
+            
             self.dismiss(animated: true, completion: nil)
             
         })
