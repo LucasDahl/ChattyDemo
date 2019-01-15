@@ -63,7 +63,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
                     
-                    // Scroll to the last index
+                    // Scroll to the last index - this is need to seee the meesage just sent
                     let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                     self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                     
