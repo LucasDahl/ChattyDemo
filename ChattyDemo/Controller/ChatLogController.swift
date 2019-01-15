@@ -62,9 +62,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 self.messages.append(Message(dictionary: dictionary))
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
-                    //scroll to the last index
-                    //                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                    //                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                    
+                    // Scroll to the last index
+                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                    
+                    
                 })
                 
             }, withCancel: nil)
@@ -249,6 +252,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
+        
         let imageName = UUID().uuidString
         let ref = Storage.storage().reference().child("message_images").child(imageName)
         
@@ -293,6 +297,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 
     
     func handleKeyboardWillShow(_ notification: Notification) {
+        
         let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         let keyboardDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
         
@@ -303,6 +308,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func handleKeyboardWillHide(_ notification: Notification) {
+        
         let keyboardDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
         
         containerViewBottomAnchor?.constant = 0
@@ -379,6 +385,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
+            
         } else {
             
             cell.messageImageView.isHidden = true

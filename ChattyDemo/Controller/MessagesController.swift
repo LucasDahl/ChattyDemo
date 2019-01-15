@@ -182,10 +182,12 @@ class MessagesController: UITableViewController {
     }
     
     @objc func handleNewMessage() {
+        
         let newMessageController = NewMessageController()
         newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
+        
     }
     
     func checkIfUserIsLoggedIn() {

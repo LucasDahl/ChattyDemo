@@ -14,6 +14,11 @@ class ChatMessageCell: UICollectionViewCell {
     // Properties
     var message: Message?
     var chatLogController: ChatLogController?
+    var playerLayer: AVPlayerLayer?
+    var player: AVPlayer?
+    var bubbleWidthAnchor: NSLayoutConstraint?
+    var bubbleViewRightAnchor: NSLayoutConstraint?
+    var bubbleViewLeftAnchor: NSLayoutConstraint?
     
     let activityIndicatorView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .whiteLarge)
@@ -34,8 +39,6 @@ class ChatMessageCell: UICollectionViewCell {
         return button
     }()
     
-    var playerLayer: AVPlayerLayer?
-    var player: AVPlayer?
     
     @objc func handlePlay() {
         if let videoUrlString = message?.videoUrl, let url = URL(string: videoUrlString) {
@@ -114,9 +117,6 @@ class ChatMessageCell: UICollectionViewCell {
         }
     }
     
-    var bubbleWidthAnchor: NSLayoutConstraint?
-    var bubbleViewRightAnchor: NSLayoutConstraint?
-    var bubbleViewLeftAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
