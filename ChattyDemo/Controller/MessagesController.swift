@@ -116,8 +116,13 @@ class MessagesController: UITableViewController {
         // Setup the frame
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
         
+        // Setup the containerView
         let containerView = UIView()
+        
+        // Allows access to use auto-layout constraints
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the contrianer to the subview
         titleView.addSubview(containerView)
         
         // Get and set the profile image
@@ -151,11 +156,18 @@ class MessagesController: UITableViewController {
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
+       // Setup the name label
         let nameLabel = UILabel()
         
+        // Add the nameLabel
         containerView.addSubview(nameLabel)
+        
+         // Set the name label
         nameLabel.text = user.name
+        
+         // Allows access to use auto-layout constraints
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         //need x,y,width,height anchors
         nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
