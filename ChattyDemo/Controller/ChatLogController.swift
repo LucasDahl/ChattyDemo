@@ -14,6 +14,17 @@ import AVFoundation
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    //===================
+    // MARK: - Properties
+    //===================
+    
+    let cellId = "cellId"
+    var messages = [Message]()
+    var startingFrame: CGRect?
+    var blackBackgroundView: UIView?
+    var startingImageView: UIImageView?
+    var containerViewBottomAnchor: NSLayoutConstraint?
+    
     var user: User? {
         didSet {
             navigationItem.title = user?.name
@@ -22,7 +33,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    var messages = [Message]()
+    lazy var inputContainerView: ChatInputContainerView = {
+        
+        let chatInputContainerView = ChatInputContainerView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        chatInputContainerView.chatLogController = self
+        return chatInputContainerView
+        
+    }()
+    
+   
     
     func observeMessages() {
         guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
@@ -53,11 +72,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }, withCancel: nil)
     }
     
-    let cellId = "cellId"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup the collectionView
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
@@ -66,15 +86,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.keyboardDismissMode = .interactive
         
         setupKeyboardObservers()
+        
     }
     
-    lazy var inputContainerView: ChatInputContainerView = {
-        let chatInputContainerView = ChatInputContainerView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
-        chatInputContainerView.chatLogController = self
-        return chatInputContainerView
-    }()
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+        
+    }
+    
+    //================
+    // MARK: - Actions
+    //================
     
     @objc func handleUploadTap() {
+        
         let imagePickerController = UIImagePickerController()
         
         imagePickerController.allowsEditing = true
@@ -82,7 +109,46 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         imagePickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
         
         present(imagePickerController, animated: true, completion: nil)
+        
     }
+    
+    @objc func handleKeyboardDidShow() {
+        if messages.count > 0 {
+        }
+    }
+    
+    
+    @objc func handleZoomOut(_ tapGesture: UITapGestureRecognizer) {
+        
+        if let zoomOutImageView = tapGesture.view {
+            //need to animate back out to controller
+            zoomOutImageView.layer.cornerRadius = 16
+            zoomOutImageView.clipsToBounds = true
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                
+                zoomOutImageView.frame = self.startingFrame!
+                self.blackBackgroundView?.alpha = 0
+                self.inputContainerView.alpha = 1
+                
+            }, completion: { (completed) in
+                zoomOutImageView.removeFromSuperview()
+                self.startingImageView?.isHidden = false
+            })
+        }
+    }
+    
+    @objc func handleSend() {
+        let properties = ["text": inputContainerView.inputTextField.text!]
+        sendMessageWithProperties(properties as [String : AnyObject])
+    }
+    
+    // End Actions =============================
+    
+    
+    //================
+    // MARK: - methods
+    //================
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // Local variable inserted by Swift 4.2 migrator.
@@ -97,13 +163,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             handleImageSelectedForInfo(info as [String : AnyObject])
         }
         
+        // Dismiss the viewController
         dismiss(animated: true, completion: nil)
+        
     }
     
     fileprivate func handleVideoSelectedForUrl(_ url: URL) {
+        
+        // Setup a file name with a unique string with the .mov format
         let filename = UUID().uuidString + ".mov"
+        
+        // Get a ref to the message movies storage
         let ref = Storage.storage().reference().child("message_movies").child(filename)
+        
+        // Setup the task to upload video files
         let uploadTask = ref.putFile(from: url, metadata: nil, completion: { (_, err) in
+            
             if let err = err {
                 print("Failed to upload movie:", err)
                 return
@@ -214,24 +289,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
-        
-        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-        //
-        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
     }
-    
-    @objc func handleKeyboardDidShow() {
-        if messages.count > 0 {
-            //            let indexPath = IndexPath(item: messages.count - 1, section: 0)
-            //            collectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self)
-    }
+
     
     func handleKeyboardWillShow(_ notification: Notification) {
         let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
@@ -251,6 +310,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             self.view.layoutIfNeeded()
         })
     }
+    
+    //=======================
+    // MARK: - CollectionView
+    //=======================
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -290,6 +353,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
         
         if message.fromId == Auth.auth().currentUser?.uid {
+            
             //outgoing blue
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
             cell.textView.textColor = UIColor.white
@@ -299,6 +363,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.bubbleViewLeftAnchor?.isActive = false
             
         } else {
+            
             //incoming gray
             cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
             cell.textView.textColor = UIColor.black
@@ -306,14 +371,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
+            
         }
         
         if let messageImageUrl = message.imageUrl {
+            
             cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
         } else {
+            
             cell.messageImageView.isHidden = true
+            
         }
     }
     
@@ -343,28 +412,35 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     fileprivate func estimateFrameForText(_ text: String) -> CGRect {
+        
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): UIFont.systemFont(ofSize: 16)]), context: nil)
-    }
     
-    var containerViewBottomAnchor: NSLayoutConstraint?
-    
-    @objc func handleSend() {
-        let properties = ["text": inputContainerView.inputTextField.text!]
-        sendMessageWithProperties(properties as [String : AnyObject])
     }
     
     fileprivate func sendMessageWithImageUrl(_ imageUrl: String, image: UIImage) {
+        
         let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": image.size.width as AnyObject, "imageHeight": image.size.height as AnyObject]
         sendMessageWithProperties(properties)
+        
     }
     
     fileprivate func sendMessageWithProperties(_ properties: [String: Any]) {
+        
+        // Get a ref to the database
         let ref = Database.database().reference().child("messages")
+        
+        // Get a ref to the child autoId
         let childRef = ref.childByAutoId()
+        
+        // Get the to ID
         let toId = user!.id!
+        
+        // Get the from ID
         let fromId = Auth.auth().currentUser!.uid
+        
+        // Setup the timestamp
         let timestamp = Int(Date().timeIntervalSince1970)
         
         var values: [String: Any] = ["toId": toId, "fromId": fromId, "timestamp": timestamp]
@@ -395,10 +471,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         handleSend()
         return true
     }
-    
-    var startingFrame: CGRect?
-    var blackBackgroundView: UIView?
-    var startingImageView: UIImageView?
+ 
     
     //my custom zooming logic
     func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
@@ -415,6 +488,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
         
         if let keyWindow = UIApplication.shared.keyWindow {
+            
             blackBackgroundView = UIView(frame: keyWindow.frame)
             blackBackgroundView?.backgroundColor = UIColor.black
             blackBackgroundView?.alpha = 0
@@ -424,6 +498,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
+                // Set the alphas
                 self.blackBackgroundView?.alpha = 1
                 self.inputContainerView.alpha = 0
                 
@@ -437,31 +512,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 zoomingImageView.center = keyWindow.center
                 
             }, completion: { (completed) in
-                //                    do nothing
             })
             
         }
     }
     
-    @objc func handleZoomOut(_ tapGesture: UITapGestureRecognizer) {
-        if let zoomOutImageView = tapGesture.view {
-            //need to animate back out to controller
-            zoomOutImageView.layer.cornerRadius = 16
-            zoomOutImageView.clipsToBounds = true
-            
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                
-                zoomOutImageView.frame = self.startingFrame!
-                self.blackBackgroundView?.alpha = 0
-                self.inputContainerView.alpha = 1
-                
-            }, completion: { (completed) in
-                zoomOutImageView.removeFromSuperview()
-                self.startingImageView?.isHidden = false
-            })
-        }
-    }
-}
+   
+} // End class
 
 
 //=========================
