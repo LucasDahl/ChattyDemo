@@ -11,21 +11,26 @@ import Firebase
 
 class NewMessageController: UITableViewController {
     
+    // Properties
     let cellId = "cellId"
-    
+    var messagesController: MessagesController?
     var users = [User]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the leftBar button item
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
+        // Register the cell
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         fetchUser()
+        
     }
     
     func fetchUser() {
+        
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
@@ -38,7 +43,6 @@ class NewMessageController: UITableViewController {
                     self.tableView.reloadData()
                 })
                 
-                //                user.name = dictionary["name"]
             }
             
         }, withCancel: nil)
@@ -53,12 +57,20 @@ class NewMessageController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Setup the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
+        // Get the user
         let user = users[indexPath.row]
+        
+        // Set the cell text
         cell.textLabel?.text = user.name
+        
+        // Set the detail label
         cell.detailTextLabel?.text = user.email
         
+        // Make sure the profileImage/Url is not nil
         if let profileImageUrl = user.profileImageUrl {
             cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
@@ -70,7 +82,6 @@ class NewMessageController: UITableViewController {
         return 72
     }
     
-    var messagesController: MessagesController?
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {

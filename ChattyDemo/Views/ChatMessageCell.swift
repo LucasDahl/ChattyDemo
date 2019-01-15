@@ -11,8 +11,8 @@ import AVFoundation
 
 class ChatMessageCell: UICollectionViewCell {
     
+    // Properties
     var message: Message?
-    
     var chatLogController: ChatLogController?
     
     let activityIndicatorView: UIActivityIndicatorView = {

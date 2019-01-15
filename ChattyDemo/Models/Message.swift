@@ -11,6 +11,7 @@ import Firebase
 
 class Message: NSObject {
     
+    // Properties
     var fromId: String?
     var text: String?
     var timestamp: NSNumber?

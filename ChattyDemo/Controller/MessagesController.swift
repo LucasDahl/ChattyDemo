@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -35,31 +36,33 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class MessagesController: UITableViewController {
     
+    // Properties
     let cellId = "cellId"
+    var messages = [Message]()
+    var messagesDictionary = [String: Message]()
+    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the leftBar button item
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
+        // Set the rightBar button item
         let image = UIImage(named: "new_message_icon")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
         
+        // Register the cell
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-        //        observeMessages()
     }
     
-    var messages = [Message]()
-    var messagesDictionary = [String: Message]()
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
         let message = self.messages[indexPath.row]
         
@@ -80,10 +83,10 @@ class MessagesController: UITableViewController {
     }
     
     func observeUserMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
         
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        // Get the database ref
         let ref = Database.database().reference().child("user-messages").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
             
@@ -99,15 +102,19 @@ class MessagesController: UITableViewController {
     }
     
     fileprivate func fetchMessageWithMessageId(_ messageId: String) {
+        
         let messagesReference = Database.database().reference().child("messages").child(messageId)
         
         messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
+                
                 let message = Message(dictionary: dictionary)
                 
                 if let chatPartnerId = message.chatPartnerId() {
+                    
                     self.messagesDictionary[chatPartnerId] = message
+                    
                 }
                 
                 self.attemptReloadOfTable()
@@ -117,21 +124,21 @@ class MessagesController: UITableViewController {
     }
     
     fileprivate func attemptReloadOfTable() {
+        
         self.timer?.invalidate()
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+        
     }
     
-    var timer: Timer?
-    
     @objc func handleReloadTable() {
+        
         self.messages = Array(self.messagesDictionary.values)
         self.messages.sort(by: { (message1, message2) -> Bool in
             
             return message1.timestamp?.int32Value > message2.timestamp?.int32Value
         })
         
-        //this will crash because of background thread, so lets call this on dispatch_async main thread
         DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
         })
@@ -208,6 +215,7 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser(_ user: User) {
+        
         messages.removeAll()
         messagesDictionary.removeAll()
         tableView.reloadData()

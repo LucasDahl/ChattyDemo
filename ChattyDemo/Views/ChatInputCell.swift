@@ -10,6 +10,9 @@ import UIKit
 
 class ChatInputContainerView: UIView, UITextFieldDelegate {
     
+    // Properties
+    let sendButton = UIButton(type: .system)
+    
     weak var chatLogController: ChatLogController? {
         didSet {
             sendButton.addTarget(chatLogController, action: #selector(ChatLogController.handleSend), for: .touchUpInside)
@@ -33,7 +36,6 @@ class ChatInputContainerView: UIView, UITextFieldDelegate {
         return uploadImageView
     }()
     
-    let sendButton = UIButton(type: .system)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,6 +78,7 @@ class ChatInputContainerView: UIView, UITextFieldDelegate {
         separatorLineView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         separatorLineView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
