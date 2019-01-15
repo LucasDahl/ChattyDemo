@@ -151,8 +151,8 @@ class MessagesController: UITableViewController {
         
         // Set the constraints
         // x, y, width, height anchors
-        profileImageView.leftAnchor.constraint(equalTo: titleView.leftAnchor).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
+        profileImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
