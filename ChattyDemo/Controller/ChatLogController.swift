@@ -118,6 +118,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     @objc func handleKeyboardDidShow() {
         if messages.count > 0 {
         }
+        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+        self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+    }
+    
+    @objc func handlekeyboardDidHide() {
+        
+        
+        
     }
     
     
@@ -293,6 +301,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handlekeyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 
     
